@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Renderable
+  include CacheHelper
 
   skip_before_action :verify_authenticity_token
 

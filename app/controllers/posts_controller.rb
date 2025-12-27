@@ -1,7 +1,9 @@
 class PostsController < ApplicationController
+  DEFAULT_PAGE = 1
   DEFAULT_LIMIT = 50
+  DEFAULT_TTL = 30
 
-  before_action :find_post, only: [:show, :update, :destroy]
+  before_action :find_post, only: [ :show, :update, :destroy ]
 
   def create
     @post = Post.new(permit_params)
@@ -14,8 +16,15 @@ class PostsController < ApplicationController
   end
 
   def index
-    @posts = Post.page(params[:page]).per(params[:limit] || DEFAULT_LIMIT)
-    render_success(response: @posts, status: :ok)
+    page  = params[:page].presence || DEFAULT_PAGE
+    limit = params[:limit].presence || DEFAULT_LIMIT
+    key   = "posts:index:page:#{page}:limit:#{limit}"
+
+    posts = cache_fetch(key, ttl: DEFAULT_TTL) do
+      Post.order(:id).page(page).per(limit).as_json
+    end
+
+    render_success(response: posts, status: :ok)
   end
 
   def show
