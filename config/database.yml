@@ -2,15 +2,42 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: localhost
+  username: trongtk248
+  password: 123123
 
 development:
-  <<: *default
-  database: rails_lv1_development
+  primary:
+    <<: *default
+    database: rails_lv1_development
+  cable:
+    <<: *default
+    database: rails_lv1_development
+  queue:
+    <<: *default
+    database: rails_lv1_development
 
 test:
-  <<: *default
-  database: rails_lv1_test
+  primary:
+    <<: *default
+    database: rails_lv1_test
+  cable:
+    <<: *default
+    database: rails_lv1_test
+  queue:
+    <<: *default
+    database: rails_lv1_test
 
 production:
-  <<: *default
-  database: rails_lv1_production
+  primary:
+    <<: *default
+    database: rails_lv1_production
+  cable:
+    <<: *default
+    database: rails_lv1_production
+  queue:
+    <<: *default
+    database: rails_lv1_production
+  cache:
+    <<: *default
+    database: rails_lv1_production

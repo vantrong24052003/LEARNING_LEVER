@@ -17,15 +17,14 @@ gem "kamal", require: false
 gem "thruster", require: false
 gem "kaminari"
 gem "redis"
+gem "ffaker"
 
 group :development, :test do
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem "debug", platforms: %i[ mri windows ], require: false
 
   gem "brakeman", require: false
 
   gem "rubocop-rails-omakase", require: false
-
-  gem "ffaker"
 end
 
 group :development do
@@ -35,4 +34,13 @@ end
 group :test do
   gem "capybara"
   gem "selenium-webdriver"
+end
+
+group :production do
+  gem "capistrano"
+  gem "capistrano3-puma"
+  gem "capistrano-rails", require: false
+  gem "capistrano-yarn"
+  gem "capistrano-bundler", require: false
+  gem "capistrano-rvm"
 end
