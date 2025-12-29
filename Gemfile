@@ -18,6 +18,7 @@ gem "thruster", require: false
 gem "kaminari"
 gem "redis"
 gem "ffaker"
+gem "graphql"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: false
@@ -29,6 +30,7 @@ end
 
 group :development do
   gem "web-console"
+  gem "graphiql-rails"
 end
 
 group :test do
