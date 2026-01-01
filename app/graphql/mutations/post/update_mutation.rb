@@ -8,7 +8,7 @@ module Mutations
       argument :status, String, required: false
 
       field :data, ObjectTypes::PostType, null: true
-      field :errors, [String], null: false
+      field :errors, [ String ], null: false
 
       def resolve(id:, **attrs)
         post = ::Post.find_by(id: id)

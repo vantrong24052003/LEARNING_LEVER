@@ -23,7 +23,7 @@ post_count = Post.count
   Post.create!(
     user: users.sample,
     title: FFaker::Book.title,
-    status: ["draft", "published", "archived"].sample
+    status: [ "draft", "published", "archived" ].sample
   )
 end
 

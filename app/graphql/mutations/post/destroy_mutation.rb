@@ -6,7 +6,7 @@ module Mutations
       argument :id, ID, required: true
 
       field :data, ObjectTypes::PostType, null: true
-      field :errors, [String], null: false
+      field :errors, [ String ], null: false
 
       def resolve(id:)
         post = ::Post.find_by(id: id)

@@ -8,7 +8,7 @@ module Mutations
       argument :user_id, ID, required: true
 
       field :data, ObjectTypes::PostType, null: true
-      field :errors, [String], null: false
+      field :errors, [ String ], null: false
 
       def resolve(title:, status:, user_id:)
         user = find_user(user_id)

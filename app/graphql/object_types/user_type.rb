@@ -8,6 +8,6 @@ module ObjectTypes
     field :name, String, null: false
     field :email, String, null: false
 
-    field :posts, [ObjectTypes::PostType], null: false
+    field :posts, [ ObjectTypes::PostType ], null: false
   end
 end

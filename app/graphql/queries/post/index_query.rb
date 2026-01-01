@@ -6,7 +6,7 @@ module Queries
       DEFAULT_PAGE = 1
       DEFAULT_LIMIT = 10
 
-      type [ObjectTypes::PostType], null: false
+      type [ ObjectTypes::PostType ], null: false
       argument :page, Integer, required: false, default_value: DEFAULT_PAGE
       argument :limit, Integer, required: false, default_value: DEFAULT_LIMIT
 
