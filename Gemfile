@@ -22,6 +22,8 @@ gem "graphql"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: false
+  gem "rspec-rails"
+  gem "bundler-audit", require: false
 
   gem "brakeman", require: false
 
@@ -36,6 +38,7 @@ end
 group :test do
   gem "capybara"
   gem "selenium-webdriver"
+  gem "factory_bot_rails"
 end
 
 group :production do
