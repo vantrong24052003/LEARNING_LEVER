@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   DEFAULT_LIMIT = 50
   DEFAULT_TTL = 30
 
-  before_action :find_post, only: [ :show, :update, :destroy ]
+  before_action :find_post, only: [ :update, :destroy ]
 
   def create
     @post = Post.new(permit_params)
@@ -27,9 +27,9 @@ class PostsController < ApplicationController
     render_success(response: posts, status: :ok)
   end
 
-  def show
-    render_success(response: @post, status: :ok)
-  end
+  # def show
+  #   render_success(response: @post, status: :ok)
+  # end
 
   def update
     if @post.update(permit_params)
