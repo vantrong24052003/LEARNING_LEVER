@@ -1,0 +1,208 @@
+<div class="card">
+  <h1>Dashboard</h1>
+  <p>Welcome back! Here's your overview.</p>
+</div>
+
+<div class="grid">
+  <div class="card clickable" data-stat="users">
+    <h3>Total Users</h3>
+    <p style="font-size: 2.5rem; color: #3498db; font-weight: bold;"><%= @stats[:total_users] %></p>
+    <p><span class="badge badge-success">+12% from last month</span></p>
+  </div>
+
+  <div class="card clickable" data-stat="posts">
+    <h3>Total Posts</h3>
+    <p style="font-size: 2.5rem; color: #27ae60; font-weight: bold;"><%= @stats[:total_posts] %></p>
+    <p><span class="badge badge-success">+8% from last month</span></p>
+  </div>
+
+  <div class="card clickable" data-stat="comments">
+    <h3>Total Comments</h3>
+    <p style="font-size: 2.5rem; color: #e74c3c; font-weight: bold;"><%= @stats[:total_comments] %></p>
+    <p><span class="badge badge-warning">Steady</span></p>
+  </div>
+
+  <div class="card clickable" data-stat="active">
+    <h3>Active Users</h3>
+    <p style="font-size: 2.5rem; color: #9b59b6; font-weight: bold;"><%= @stats[:active_users] %></p>
+    <p><span class="badge badge-success">Last 30 days</span></p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Recent Users</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @recent_users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name || "User #{user.id}" %></td>
+          <td><%= user.email %></td>
+          <td>
+            <% if user.id.even? %>
+              <span class="badge badge-success">Active</span>
+            <% else %>
+              <span class="badge badge-warning">Pending</span>
+            <% end %>
+          </td>
+          <td>
+            <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;" data-action="edit-user-<%= user.id %>">Edit</button>
+            <button class="btn btn-danger" style="padding: 0.5rem 1rem; font-size: 0.875rem;" data-action="delete-user-<%= user.id %>">Delete</button>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>Recent Posts</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>User ID</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @recent_posts.each do |post| %>
+        <tr>
+          <td><%= post.id %></td>
+          <td><%= post.title %></td>
+          <td><%= post.user_id %></td>
+          <td>
+            <% case post.status %>
+            <% when 'published' %>
+              <span class="badge badge-success"><%= post.status %></span>
+            <% when 'draft' %>
+              <span class="badge badge-warning"><%= post.status %></span>
+            <% else %>
+              <span class="badge badge-danger"><%= post.status %></span>
+            <% end %>
+          </td>
+          <td>
+            <button class="btn btn-success" style="padding: 0.5rem 1rem; font-size: 0.875rem;" data-action="view-post-<%= post.id %>">View</button>
+            <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;" data-action="edit-post-<%= post.id %>">Edit</button>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>Quick Actions</h2>
+  <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+    <button class="btn btn-primary" data-action="create-user">Create New User</button>
+    <button class="btn btn-success" data-action="create-post">Create New Post</button>
+    <button class="btn btn-danger" data-action="export-data">Export Data</button>
+    <button class="btn btn-primary" data-action="refresh-stats">Refresh Statistics</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Filter & Sort</h2>
+  <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
+    <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+      <label for="filter-status">Filter by Status:</label>
+      <select id="filter-status">
+        <option value="">All Statuses</option>
+        <option value="active">Active</option>
+        <option value="pending">Pending</option>
+        <option value="inactive">Inactive</option>
+      </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+      <label for="sort-by">Sort By:</label>
+      <select id="sort-by">
+        <option value="name">Name</option>
+        <option value="email">Email</option>
+        <option value="created_at">Created Date</option>
+      </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 0;">
+      <label for="search-users">Search:</label>
+      <input type="text" id="search-users" placeholder="Search users..." style="min-width: 250px;">
+    </div>
+
+    <button class="btn btn-primary" data-action="apply-filter">Apply Filter</button>
+    <button class="btn btn-danger" data-action="clear-filter">Clear</button>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Stat cards click
+    document.querySelectorAll('[data-stat]').forEach(card => {
+      card.addEventListener('click', function() {
+        const stat = this.dataset.stat;
+        alert(`Viewing details for: ${stat}`);
+      });
+    });
+
+    // Action buttons
+    document.querySelectorAll('[data-action]').forEach(button => {
+      button.addEventListener('click', function(e) {
+        if (this.tagName === 'BUTTON') {
+          e.preventDefault();
+          const action = this.dataset.action;
+          alert(`Action triggered: ${action}`);
+        }
+      });
+    });
+
+    // Table row hover effect
+    document.querySelectorAll('tbody tr').forEach(row => {
+      row.addEventListener('click', function() {
+        const id = this.cells[0].textContent;
+        console.log('Row clicked:', id);
+      });
+    });
+
+    // Filter controls
+    const filterStatus = document.getElementById('filter-status');
+    const sortBy = document.getElementById('sort-by');
+    const searchUsers = document.getElementById('search-users');
+
+    filterStatus.addEventListener('change', function() {
+      console.log('Filter by status:', this.value);
+    });
+
+    sortBy.addEventListener('change', function() {
+      console.log('Sort by:', this.value);
+    });
+
+    searchUsers.addEventListener('input', function() {
+      console.log('Search query:', this.value);
+    });
+
+    // Simulate data refresh
+    const refreshBtn = document.querySelector('[data-action="refresh-stats"]');
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', function() {
+        this.disabled = true;
+        this.textContent = 'Refreshing...';
+
+        setTimeout(() => {
+          this.disabled = false;
+          this.textContent = 'Refresh Statistics';
+          alert('Statistics refreshed!');
+        }, 1500);
+      });
+    }
+  });
+</script>

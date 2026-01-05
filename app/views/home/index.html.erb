@@ -1,0 +1,131 @@
+<div class="card">
+  <h1>Welcome to Playwright MCP Test Pages</h1>
+  <p>This is a demo application with various UI components for testing Playwright MCP functionality.</p>
+</div>
+
+<div class="grid">
+  <div class="card clickable">
+    <h3>Buttons Test</h3>
+    <p>Click the buttons below to test interactions:</p>
+    <div style="margin-top: 1rem;">
+      <button class="btn btn-primary" data-action="primary-button">Primary Button</button>
+      <button class="btn btn-success" data-action="success-button">Success Button</button>
+      <button class="btn btn-danger" data-action="danger-button">Danger Button</button>
+      <button class="btn btn-primary" disabled>Disabled Button</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Form Elements</h3>
+    <form id="test-form" data-action="form-submit">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email">
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category:</label>
+        <select id="category" name="category">
+          <option value="">Select a category</option>
+          <option value="tech">Technology</option>
+          <option value="science">Science</option>
+          <option value="art">Art</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="4" placeholder="Enter your message"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="subscribe" name="subscribe">
+          Subscribe to newsletter
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit Form</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h3>Interactive Elements</h3>
+    <div class="form-group">
+      <label>Click Counter: <span id="counter">0</span></label>
+      <button class="btn btn-success" id="increment-btn" data-action="increment">Increment</button>
+    </div>
+
+    <div class="form-group">
+      <label for="search">Search:</label>
+      <input type="text" id="search" placeholder="Type to search..." data-action="search-input">
+    </div>
+
+    <div class="form-group">
+      <label>Status:</label>
+      <div>
+        <span class="badge badge-success">Active</span>
+        <span class="badge badge-warning">Pending</span>
+        <span class="badge badge-danger">Inactive</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Navigation Links</h3>
+  <p>Test navigation between pages:</p>
+  <div style="margin-top: 1rem;">
+    <a href="/sessions/new" class="btn btn-primary">Go to Login Page</a>
+    <a href="/dashboards" class="btn btn-success">Go to Dashboard</a>
+    <a href="/nonexistent" class="btn btn-danger">Broken Link (404)</a>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Dynamic Content</h3>
+  <p>Current Time: <strong id="current-time"><%= Time.current.strftime("%Y-%m-%d %H:%M:%S") %></strong></p>
+  <p>Total Users: <strong><%= @users.count %></strong></p>
+  <p>Total Posts: <strong><%= @posts.count %></strong></p>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Click counter
+    let count = 0;
+    const counterEl = document.getElementById('counter');
+    const incrementBtn = document.getElementById('increment-btn');
+
+    incrementBtn.addEventListener('click', function() {
+      count++;
+      counterEl.textContent = count;
+    });
+
+    // Form submission
+    const form = document.getElementById('test-form');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+      alert('Form submitted!\n' + JSON.stringify(data, null, 2));
+    });
+
+    // Search input
+    const searchInput = document.getElementById('search');
+    searchInput.addEventListener('input', function() {
+      console.log('Search query:', this.value);
+    });
+
+    // Update time
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('current-time').textContent = now.toLocaleString();
+    }
+    setInterval(updateTime, 1000);
+  });
+</script>

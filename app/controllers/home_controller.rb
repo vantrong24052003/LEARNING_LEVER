@@ -1,0 +1,6 @@
+class HomeController < ApplicationController
+  def index
+    @users = User.limit(5)
+    @posts = Post.limit(5)
+  end
+end
