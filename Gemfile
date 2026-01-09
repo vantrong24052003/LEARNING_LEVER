@@ -19,6 +19,7 @@ gem "kaminari"
 gem "redis"
 gem "ffaker"
 gem "graphql"
+gem "faraday", "2.14"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: false

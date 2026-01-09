@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql" if Rails.env.development?
+  namespace :external do
+    resources :letta, only: :create
+  end
+
   post "/graphql", to: "graphql#execute"
 
   root "home#index"
