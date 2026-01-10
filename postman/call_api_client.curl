@@ -3,6 +3,6 @@
 curl -X POST http://localhost:3000/external/letta \
   -H "Content-Type: application/json" \
   -d '{
-    "agent_id": "agent-3f4b37b5-a448-4408-a836-b96cbbab5115",
-    "message": "Tìm cho tôi 10 bài viết bất kỳ"
+    "agent_id": "agent-4eb2e053-2591-497b-ac83-17f38f8175f8",
+    "message": "Tìm 5 bài viết published có tiêu đề chứa chữ Hills"
   }'

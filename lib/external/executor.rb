@@ -4,8 +4,7 @@ module External
 
     def call(tool_calls)
       tool_calls.map do |call|
-        args = call[:arguments].is_a?(String) ? JSON.parse(call[:arguments]) : call[:arguments]
-        output = execute_tool(call[:name], args)
+        output = execute_tool(call[:name], call[:arguments])
         { tool_call_id: call[:id], output: output.to_json, name: call[:name] }
       end
     end
@@ -13,8 +12,11 @@ module External
     private
 
     def execute_tool(name, args)
-      return External::LocalQuery.new.search(query: args["query"], category: args["category"]) if name == TOOL_QUERY_LOCAL
-      
+      return External::LocalQuery.new.search(
+        query: args["query"], 
+        category: args["category"], 
+        limit: args["limit"]
+      ) if name == TOOL_QUERY_LOCAL
       { error: "Tool not found: #{name}" }
     rescue StandardError => e
       { error: e.message }

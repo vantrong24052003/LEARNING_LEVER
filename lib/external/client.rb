@@ -16,7 +16,7 @@ module External
     def send_message(agent_id:, content:, role: ROLE_USER)
       path = format(MESSAGES_PATH, agent_id: agent_id)
       body = { message: content, role: role }
-      
+
       handle_response(connection.post(path) { |req| req.body = body.to_json })
     end
 
@@ -28,14 +28,13 @@ module External
 
     def send_tool_outputs(agent_id:, tool_outputs:)
       path = format(MESSAGES_PATH, agent_id: agent_id)
-      # Use 'system' role as 'tool' is not supported by API
-      messages = tool_outputs.map do |o| 
-        { 
-          role: "system", 
-          content: "Tool '#{o[:name]}' output: #{o[:output]}" 
-        } 
+      messages = tool_outputs.map do |o|
+        {
+          role: "system",
+          content: "Tool '#{o[:name]}' output: #{o[:output]}"
+        }
       end
-      
+
       handle_response(connection.post(path) { |req| req.body = { messages: messages }.to_json })
     end
 
