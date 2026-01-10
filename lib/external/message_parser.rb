@@ -10,6 +10,20 @@ module External
       response["data"]["data"]["response"]["stop_reason"]["stop_reason"]
     end
 
+    def self.extract_tool_calls(response)
+      messages = extract_messages(response)
+      tool_msg = messages.find { |m| m["message_type"] == "tool_call_message" }
+      return [] unless tool_msg
+      
+      tool_msg["tool_calls"].map do |tc|
+        {
+          id: tc["id"],
+          name: tc["function"]["name"],
+          arguments: JSON.parse(tc["function"]["arguments"])
+        }
+      end
+    end
+
     def self.extract_approval_msg(response)
       messages = extract_messages(response)
       messages.find { |m| m["message_type"] == ApprovalRequestMessage }

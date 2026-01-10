@@ -1,41 +1,48 @@
-# Phase 1: Register Tool (Tránh lỗi Server)
+# Phase 1: Tool Definition (Định nghĩa Tool)
 
-Việc đăng ký tool đôi khi có thể gây lỗi `NameError: DynamicModel` trên Server Letta nếu định dạng JSON Schema không chuẩn. 
+Tài liệu này đặc tả cấu hình chuẩn để đăng ký Capability (Tool) từ Client App lên Letta Server.
 
 ---
 
-## 1. Cách đăng ký "An Toàn" (Khuyên dùng)
+## 1. API Đăng ký Tool
 
-Để tránh lỗi, Letta khuyên bạn hãy để nó **tự động suy luận** (Auto-infer) cấu trúc tool từ Python Docstring. 
+Client Application (Project 2) cần khai báo các hàm local để Letta Server (Project 1) có thể lập kế hoạch gọi tool.
 
-- **Body (JSON)**: Không cần truyền `jsonSchema`.
+- **Endpoint**: `POST {LETTA_SERVER_URL}/api/agents/tools`
+  *(Mặc định: `http://localhost:4000/api/agents/tools`)*
 
+- **Payload Cấu hình chuẩn**:
 ```json
 {
-  "sourceCode": "def query_local_db(query, category=None):\n    \"\"\"\n    Tìm kiếm sản phẩm trong database local của khách hàng.\n\n    Args:\n        query (str): Từ khóa tìm kiếm.\n        category (str): Danh mục (tùy chọn).\n    \"\"\"\n    # Code python này SẼ KHÔNG CHẠY nếu bạn bật requires_approval\n    return \"WAITING_FOR_CLIENT_EXECUTION\"",
-  "description": "Tool dùng để truy vấn database local của Client App.",
+  "name": "query_local_db",
+  "description": "Truy vấn database local của Client App để tìm thông tin bài viết.",
+  "sourceCode": "def query_local_db(query: str, category: str = None):\n    \"\"\"\n    Mô tả: Tìm kiếm bài viết trong DB local.\n\n    Args:\n        query (str): Từ khóa tìm kiếm.\n        category (str): Danh mục bài viết (tùy chọn).\n    \"\"\"\n    return \"WAITING_FOR_CLIENT_EXECUTION\"",
   "defaultRequiresApproval": true
 }
 ```
 
-### Tại sao cách này an toàn hơn?
-- Letta Server tự dùng thư viện Python để parse docstring thành JSON Schema chuẩn của nó.
-- Bạn không cần lo lắng về việc viết JSON Schema sai định dạng gây crash server.
+---
+
+## 2. Quy trình Vận hành (Workflow)
+
+Hệ thống vận hành theo cơ chế ủy thác thực thi:
+
+1. **Đăng ký (Setup)**: Client gửi định nghĩa hàm lên Project 1. Project 1 lưu trữ "khuôn mẫu" của hàm.
+2. **Yêu cầu (Trigger)**: Khi User gửi yêu cầu cần dữ liệu, Project 1 trả về tín hiệu `tool_call_message` chứa tên hàm và tham số đã parse.
+3. **Thực thi (Local)**: Project 2 (Client) nhận tín hiệu, thực thi code SQL/Logic thực tế trên máy local.
+4. **Báo cáo (Result)**: Project 2 gửi kết quả JSON ngược lại cho Project 1 để hoàn tất câu trả lời.
 
 ---
 
-## 2. Lưu ý về Execution (Thực thi)
+## 3. Quy ước Kỹ thuật (Specification)
 
-Nếu boss thấy Server tự động trả về kết quả `"WAITING_FOR_CLIENT_EXECUTION"` mà không dừng lại hỏi:
-1. Đảm bảo `defaultRequiresApproval` luôn là `true`.
-2. Trong Project 2 (Rails/Go), code của bạn phải **không được tiếp tục chat** nếu nhận thấy message có `tool_calls`. Bạn phải ngắt flow, chạy DB, rồi mới gửi kết quả ngược lại.
+Để đảm bảo AI nhận diện chính xác tham số (Parameters), Source Code đăng ký **PHẢI** tuân thủ:
 
----
+- **Type Hinting**: Khai báo kiểu dữ liệu rõ ràng (ví dụ: `query: str`, `limit: int`).
+- **Docstring**: Sử dụng định dạng `Args:` trong cặp `"""..."""` để mô tả ý nghĩa từng tham số.
+- **Return Value**: Giá trị trả về trong `sourceCode` không quan trọng vì logic thực tế chạy ở Client, nhưng nên để chuỗi thông báo (ví dụ: `WAITING...`).
 
-## 3. Khắc phục lỗi Crash (422/500)
-
-Nếu boss gặp lỗi `NameError: DynamicModel`:
-- **Nguyên nhân**: Do trường `jsonSchema` bạn gửi lên có cấu trúc mà Pydantic (phía Server) không hiểu được.
-- **Giải pháp**: Xóa trường `jsonSchema` trong request Postman và sử dụng định dạng docstring `Args:` như ví dụ ở Mục 1.
+> [!IMPORTANT]
+> Toàn bộ logic nghiệp vụ (SQL Query, Business Rules) nằm tại **Project 2**. Project 1 chỉ đóng vai trò là "Bộ não" điều hướng.
 
 Tiếp theo: [Agent Setup](./05-agent-setup.md)

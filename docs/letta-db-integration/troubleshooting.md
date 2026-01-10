@@ -16,8 +16,12 @@
 
 #### 💣 Register Tool thất bại
 **Hiện tượng**: Client chạy script register bị lỗi 400/500.
-**Nguyên nhân**: JSON Schema sai format.
-**Khắc phục**: Properties phải có `type`, `description`. Check log server.
+**Nguyên nhân**: 
+- JSON Schema sai format.
+- **Lỗi `NameError: DynamicModel`**: Xảy ra khi Letta cố gắng tạo Pydantic model từ `jsonSchema` của bạn nhưng gặp xung đột định danh hoặc lỗi cú pháp trong Python code được generate.
+**Khắc phục**: 
+- Kiểm tra Properties phải có `type`, `description`.
+- **Giải pháp tối ưu**: Loại bỏ hoàn toàn `jsonSchema` khi gọi API. Thay vào đó, hãy viết **Docstring (Google Style)** thật chuẩn trong code Python của tool. Letta sẽ tự động "đọc" docstring để tạo tham số (Docstring Inference), tránh được lỗi DynamicModel.
 
 ---
 

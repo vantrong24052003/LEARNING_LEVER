@@ -33,13 +33,27 @@ if (typeof args.max_price !== 'number') {
 }
 ```
 
-### 4. PII Scrubbing
-Trước khi gửi JSON về Server, hãy xóa các cột nhạy cảm.
+### 4. PII Scrubbing (Loại bỏ dữ liệu nhạy cảm)
 
-```typescript
-// Xóa số điện thoại supplier trước khi gửi cho AI
-delete row.supplier_phone;
-delete row.cost_price;
+Trước khi gửi JSON về Server, boss **BẮT BUỘC** phải xóa toàn bộ các cột nhạy cảm. AI không cần biết danh tính thực của User để làm việc.
+
+> [!CAUTION]
+> Tuyệt đối KHÔNG trả về các thông tin sau:
+> - `password`, `password_digest`
+> - `email`
+> - `phone_number`, `address` (Địa chỉ nhà)
+> - `token`, `secret_key`
+
+**Ví dụ implementation (Rails):**
+```ruby
+# Loại bỏ các cột cấm trước khi gửi kết quả
+result = posts.as_json(except: [:author_email, :password_digest])
+```
+
+**Ví dụ implementation (Go):**
+```go
+// Chỉ select những field an toàn
+rows, err := db.Query("SELECT title, content, status FROM posts ...")
 ```
 
 ## Checkpoint

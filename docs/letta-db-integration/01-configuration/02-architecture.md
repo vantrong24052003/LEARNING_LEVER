@@ -26,10 +26,12 @@
 - **Host**: Server của khách hàng / Local machine.
 - **Logic**: Chứa code query DB, business rules.
 - **Mechanism**:
-  - Gửi chat text -> P1.
-  - Nhận tool call -> P2.
-  - Thực thi -> P2.
-  - Gửi kết quả -> P1.
+  - **Giai đoạn Thiết lập (Setup)**: Client định nghĩa sẵn logic các hàm (ví dụ: `query_local_db`) và chủ động **Đăng ký (Register)** danh sách Tool này lên Project 1.
+  - **Giai đoạn Vận hành (Runtime)**:
+    1. User gửi tin nhắn -> Project 2.
+    2. Project 2 forward tin nhắn -> Project 1.
+    3. Project 1 yêu cầu gọi Tool (dựa trên danh sách đã đăng ký) -> Project 2.
+    4. Project 2 thực thi logic thực tế (SQL/Business rules) -> Trả kết quả về Project 1.
 
 ## Security Boundary
 

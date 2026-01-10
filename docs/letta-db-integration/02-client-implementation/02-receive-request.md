@@ -14,8 +14,13 @@ Dựa theo [API Contract](../01-configuration/06-api-contract.md), bạn cần k
 ```text
 response = HTTP_POST(LETTA_API_URL, payload)
 
-IF response.message_type == "tool_call_message":
-    // AI yêu cầu gọi tool
+IF response.stop_reason == "requires_approval":
+    // AI chờ xác nhận (HITL)
+    approval_msg = extract_approval_message(response)
+    RETURN { type: "APPROVAL_REQUEST", id: approval_msg.id, tool_calls: approval_msg.tool_calls }
+
+ELSE IF response.message_type == "tool_call_message":
+    // AI yêu cầu gọi tool tự động
     tool_name = response.tool_calls[0].function.name
     tool_args = JSON_PARSE(response.tool_calls[0].function.arguments)
     RETURN { type: "TOOL_REQUEST", name: tool_name, args: tool_args }
