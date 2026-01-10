@@ -1,0 +1,378 @@
+{
+	"info": {
+		"_postman_id": "letta-api-collection",
+		"name": "Letta API Platform",
+		"description": "Toàn bộ API cho Letta Server (Node.js) và Rails Client Integration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Letta Server (Node.js API)",
+			"item": [
+				{
+					"name": "Agent",
+					"item": [
+						{
+							"name": "List Agents",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/letta/agents",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"letta",
+										"agents"
+									]
+								}
+							}
+						},
+						{
+							"name": "Create Customer Support Agent",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Customer_Support_Agent\",\n  \"system\": \"BẠN LÀ AI TRỢ LÝ HỖ TRỢ KHÁCH HÀNG CỦA HỆ THỐNG.\\n\\nVAI TRÒ\\n- Hỗ trợ khách hàng tra cứu và giải đáp thông tin liên quan đến dữ liệu và dịch vụ của hệ thống.\\n- Trả lời câu hỏi dựa trên dữ liệu có sẵn hoặc kết quả từ các tools được cung cấp.\\n\\nTONE GIỌNG\\n- Lịch sự, chuyên nghiệp, thân thiện.\\n- Trung lập, rõ ràng, dễ hiểu.\\n- Không tranh luận, không cảm xúc cá nhân.\\n- Không sử dụng ngôn ngữ kỹ thuật phức tạp.\\n- Luôn ưu tiên sự an toàn và chính xác hơn việc trả lời đầy đủ.\\n\\nQUY TẮC BẮT BUỘC\\n- Chỉ trả lời dựa trên dữ liệu trong hệ thống hoặc kết quả từ tools.\\n- Tuyệt đối không suy đoán, không bịa đặt thông tin.\\n- Nếu không có dữ liệu hoặc câu hỏi ngoài phạm vi hỗ trợ, phải trả lời rõ ràng:  \\n  \\\"Tôi không có thông tin về nội dung này.\\\"\\n- Nếu khách hàng hỏi về:\\n  - Thông tin nội bộ hệ thống\\n  - Cấu trúc kỹ thuật, database, API\\n  - Khóa bảo mật, token, dữ liệu nhạy cảm  \\n  → Phải từ chối trả lời.\\n\\nQUY TẮC SỬ DỤNG TOOL\\n- Chỉ gọi tool khi câu hỏi yêu cầu dữ liệu thực tế.\\n- Không gọi tool nếu có thể trả lời trực tiếp từ ngữ cảnh.\\n- Mỗi lần gọi tool phải có mục đích rõ ràng, liên quan trực tiếp đến câu hỏi.\\n\\nPHẠM VI KIẾN THỨC\\n- Chỉ giới hạn trong dữ liệu khách hàng và dịch vụ của hệ thống.\\n- Không trả lời các câu hỏi ngoài lề, kiến thức chung, chính trị, tôn giáo, hoặc các nội dung không liên quan.\\n\\nQUAN ĐIỂM CHÍNH THỨC\\n- Hoàng Sa và Trường Sa là lãnh thổ không thể tách rời của Việt Nam.\\n- Không đưa ra bất kỳ nội dung nào trái với quan điểm này.\\n\\nCÁCH TRẢ LỜI\\n- Trả lời ngắn gọn, đúng trọng tâm.\\n- Ưu tiên kết luận rõ ràng trước, chi tiết sau nếu cần.\\n- Không tiết lộ thông tin nhạy cảm dưới bất kỳ hình thức nào.\\n\\nMỤC TIÊU\\n- Cung cấp thông tin chính xác cho khách hàng.\\n- Đảm bảo an toàn dữ liệu và bảo mật hệ thống.\\n- Mang lại trải nghiệm hỗ trợ chuyên nghiệp và đáng tin cậy.\",\n  \"tools\": [\"post_finder\", \"data_comparator\", \"statistics_aggregator\", \"calculator\"],\n  \"memory_blocks\": []\n}"
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/letta/agents",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"letta",
+										"agents"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Tool",
+					"item": [
+						{
+							"name": "List Tools",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/letta/agents/tools",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"letta",
+										"agents",
+										"tools"
+									]
+								}
+							}
+						},
+						{
+							"name": "Register Tool",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceCode\": \"def query_local_db(query: str = \\\"\\\", category: str = \\\"\\\", limit: int = None):\\n    \\\"\\\"\\\"\\n    Query the local database to find relevant articles. Returns a list of posts.\\n\\n    Args:\\n        query (str): The search term. Defaults to empty string to return all recent posts.\\n        category (str): The status of the post (e.g., \\\"published\\\", \\\"draft\\\", \\\"archived\\\").\\n        limit (int): Optional number of results to return.\\n    \\\"\\\"\\\"\\n    return \\\"WAITING_FOR_CLIENT_EXECUTION\\\"\",\n    \"description\": \"Tool to query the local client database for posts.\",\n    \"name\": \"query_local_db\",\n    \"defaultRequiresApproval\": true\n}"
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/letta/agents/tools",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"letta",
+										"agents",
+										"tools"
+									]
+								}
+							}
+						},
+						{
+							"name": "Register Post Finder",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceCode\": \"def post_finder(author_name: str = None, keyword: str = None, limit: int = 10, status: str = None):\\n    \\\"\\\"\\\"\\n    Find posts by author name, keyword, or status. Returns a list of posts with title, status, and author.\\n    \\n    Args:\\n        author_name (str): Name of the author to filter by\\n        keyword (str): Keyword to search in post title\\n        status (str): Status of the post (e.g. published, draft)\\n        limit (int): Max number of results to return\\n    \\\"\\\"\\\"\\n    pass\",\n    \"description\": \"Find posts by author name, keyword, or status.\",\n    \"name\": \"post_finder\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/letta/agents/tools",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"letta",
+										"agents",
+										"tools"
+									]
+								}
+							}
+						},
+						{
+							"name": "Register Data Comparator",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceCode\": \"def data_comparator(table_name: str, id1: int, id2: int):\\n    \\\"\\\"\\\"\\n    Compare two records from the database to find differences in key attributes.\\n    \\n    Args:\\n        table_name (str): Name of the table (e.g. posts, wallets)\\n        id1 (int): ID of the first record\\n        id2 (int): ID of the second record\\n    \\\"\\\"\\\"\\n    pass\",\n    \"description\": \"Compare two records from the database.\",\n    \"name\": \"data_comparator\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/letta/agents/tools",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"letta",
+										"agents",
+										"tools"
+									]
+								}
+							}
+						},
+						{
+							"name": "Register Statistics Aggregator",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceCode\": \"def statistics_aggregator(table_name: str, column: str, operation: str = \\\"count\\\"):\\n    \\\"\\\"\\\"\\n    Calculate statistics (sum, avg, count) for a database column.\\n    \\n    Args:\\n        table_name (str): Name of the table\\n        column (str): Column to aggregate\\n        operation (str): Operation: count, sum, avg, min, max\\n    \\\"\\\"\\\"\\n    pass\",\n    \"description\": \"Calculate statistics for a database column.\",\n    \"name\": \"statistics_aggregator\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/letta/agents/tools",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"letta",
+										"agents",
+										"tools"
+									]
+								}
+							}
+						},
+						{
+							"name": "Register Calculator",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceCode\": \"def calculator(expression: str):\\n    \\\"\\\"\\\"\\n    Perform basic arithmetic calculations.\\n    \\n    Args:\\n        expression (str): Mathematical expression (e.g. 50 * 10)\\n    \\\"\\\"\\\"\\n    pass\",\n    \"description\": \"Perform basic arithmetic calculations.\",\n    \"name\": \"calculator\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/letta/agents/tools",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"letta",
+										"agents",
+										"tools"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Block",
+					"item": [
+						{
+							"name": "Delete Memory Block",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/letta/agents/blocks/:blockId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"letta",
+										"agents",
+										"blocks",
+										":blockId"
+									],
+									"variable": [
+										{
+											"key": "blockId",
+											"value": ""
+										}
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Message",
+					"item": [
+						{
+							"name": "List Agent Messages",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/letta/agents/:agentId/messages",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"letta",
+										"agents",
+										":agentId",
+										"messages"
+									],
+									"variable": [
+										{
+											"key": "agentId",
+											"value": ""
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "2. Rails Client Integration",
+			"item": [
+				{
+					"name": "Send Message to Client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"agent_id\": \"{{AGENT_ID}}\",\n    \"message\": \"Tìm 5 bài viết published có tiêu đề chứa chữ Hills\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/external/letta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"external",
+								"letta"
+							]
+						}
+					}
+				},
+				{
+					"name": "Chat - Samara Corwin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"agent_id\": \"{{AGENT_ID}}\",\n    \"message\": \"Tìm cho tôi các bài viets của Samara Corwin\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/external/letta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"external",
+								"letta"
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "AGENT_ID",
+			"value": ""
+		}
+	]
+}

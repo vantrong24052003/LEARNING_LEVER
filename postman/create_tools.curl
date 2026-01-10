@@ -1,8 +1,0 @@
-curl -X POST http://localhost:4000/api/agents/tools \
-  -H "Content-Type: application/json" \
-  -d '{
-    "sourceCode": "def query_local_db(query: str = \"\", category: str = \"\", limit: int = None):\n    \"\"\"\n    Query the local database to find relevant articles. Returns a list of posts.\n\n    Args:\n        query (str): The search term. Defaults to empty string to return all recent posts.\n        category (str): The status of the post (e.g., \"published\", \"draft\", \"archived\").\n        limit (int): Optional number of results to return.\n    \"\"\"\n    return \"WAITING_FOR_CLIENT_EXECUTION\"",
-    "description": "Tool to query the local client database for posts.",
-    "name": "query_local_db",
-    "defaultRequiresApproval": true
-  }'

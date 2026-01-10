@@ -12,7 +12,7 @@
 - Tool description trên Server sai lệch với mục đích user.
 **Khắc phục**:
 - Vào Dashboard Server check prompt & models.
-- Dùng `api/agents/{id}/tools` để verify tool đã attach.
+- Dùng `api/letta/agents/{id}/tools` để verify tool đã attach.
 
 #### 💣 Register Tool thất bại
 **Hiện tượng**: Client chạy script register bị lỗi 400/500.

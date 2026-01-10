@@ -6,9 +6,9 @@ module Queries
       DEFAULT_PAGE = 1
       DEFAULT_LIMIT = 10
 
-      type [ ObjectTypes::PostType ], null: false
-      argument :page, Integer, required: false, default_value: DEFAULT_PAGE
+      type [ObjectTypes::PostType], null: false
       argument :limit, Integer, required: false, default_value: DEFAULT_LIMIT
+      argument :page, Integer, required: false, default_value: DEFAULT_PAGE
 
       def resolve(page:, limit:)
         ::Post.page(page).per(limit)

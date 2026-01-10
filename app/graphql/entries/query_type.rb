@@ -2,7 +2,7 @@
 
 module Entries
   class QueryType < Base::BaseObject
-    field :posts, resolver: Queries::Post::IndexQuery
     field :post, resolver: Queries::Post::ShowQuery
+    field :posts, resolver: Queries::Post::IndexQuery
   end
 end

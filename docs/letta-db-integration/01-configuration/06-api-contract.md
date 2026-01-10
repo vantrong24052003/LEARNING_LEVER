@@ -7,8 +7,8 @@
 ## 1. Register Tool
 Gửi request đăng ký capability.
 
-- **Endpoint**: `POST {LETTA_SERVER_URL}/api/agents/tools`
-  *(Hiện tại: `http://localhost:4000/api/agents/tools`)*
+- **Endpoint**: `POST {LETTA_SERVER_URL}/api/letta/agents/tools`
+  *(Hiện tại: `http://localhost:4000/api/letta/agents/tools`)*
 - **Payload (Safe Mode)**:
 ```json
 {
@@ -22,13 +22,13 @@ Gửi request đăng ký capability.
 
 ## 2. Chat & Tool Intersection
 
-Khi `POST {LETTA_SERVER_URL}/api/agents/{agent_id}/messages`, nếu nhận response có `message_type: "tool_call_message"`:
-*(Hiện tại: `http://localhost:4000/api/agents/...`)*
+Khi `POST {LETTA_SERVER_URL}/api/letta/agents/{agent_id}/messages`, nếu nhận response có `message_type: "tool_call_message"`:
+*(Hiện tại: `http://localhost:4000/api/letta/agents/...`)*
 
 1. **DỪNG** việc hiển thị tin nhắn cho user.
 2. **LẤY** `tool_calls`.
 3. **CHẠY** logic local (Rails/Go).
-4. **SEND** kết quả về Server qua API `POST {LETTA_SERVER_URL}/api/agents/{agent_id}/messages` với `role: tool`.
+4. **SEND** kết quả về Server qua API `POST {LETTA_SERVER_URL}/api/letta/agents/{agent_id}/messages` với `role: tool`.
 
 ---
 

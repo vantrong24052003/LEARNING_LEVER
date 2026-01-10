@@ -29,3 +29,8 @@
 
 en:
   hello: "Hello world"
+  sessions:
+    login_successful: "Login successful! (Demo)"
+    password_too_short: "Password must be at least 6 characters"
+    fill_all_fields: "Please fill in all fields"
+    logged_out: "Logged out successfully! (Demo)"

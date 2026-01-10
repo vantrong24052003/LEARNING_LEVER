@@ -1,8 +1,0 @@
-# Replace <AGENT_ID> with the actual ID returned from create_agent.curl
-
-curl -X POST http://localhost:3000/external/letta \
-  -H "Content-Type: application/json" \
-  -d '{
-    "agent_id": "agent-4eb2e053-2591-497b-ac83-17f38f8175f8",
-    "message": "Tìm 5 bài viết published có tiêu đề chứa chữ Hills"
-  }'

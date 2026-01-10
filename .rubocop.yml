@@ -1,8 +1,118 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+plugins:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-rspec
+  - rubocop-rspec_rails
+  - rubocop-capybara
+  - rubocop-factory_bot
+  - rubocop-graphql
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+# No inheritance needed as todo files are missing
+
+inherit_mode:
+  merge:
+    - Include
+    - Exclude
+
+AllCops:
+  UseCache: true
+  NewCops: enable
+  Exclude:
+    - "db/schema.rb"
+    - "db/migrate/*"
+    - "bin/*"
+    - "tmp/**/*"
+    - "vendor/**/*"
+    - "node_modules/**/*"
+    - "storage/**/*"
+    - "public/**/*"
+    - "Gemfile.lock"
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/FirstArgumentIndentation:
+  EnforcedStyle: consistent
+
+Layout/HashAlignment:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - "spec/**/*_spec.rb"
+    - "spec/**/shared_examples.rb"
+    - "spec/factories/**/*.rb"
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*_spec.rb"
+    - "spec/**/shared_examples.rb"
+    - "spec/factories/**/*.rb"
+    - "config/routes.rb"
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 50
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+Rails/EnvironmentVariableAccess:
+  AllowReads: true
+  AllowWrites: false
+
+Rails/Delegate:
+  Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: always
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+GraphQL/ObjectDescription:
+  Enabled: false
+
+GraphQL/FieldDescription:
+  Enabled: false
+
+GraphQL/ArgumentDescription:
+  Enabled: false
+
+GraphQL/ExtractInputType:
+  Enabled: false
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false

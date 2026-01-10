@@ -8,8 +8,8 @@ Tài liệu này đặc tả cấu hình chuẩn để đăng ký Capability (To
 
 Client Application (Project 2) cần khai báo các hàm local để Letta Server (Project 1) có thể lập kế hoạch gọi tool.
 
-- **Endpoint**: `POST {LETTA_SERVER_URL}/api/agents/tools`
-  *(Mặc định: `http://localhost:4000/api/agents/tools`)*
+- **Endpoint**: `POST {LETTA_SERVER_URL}/api/letta/agents/tools`
+  *(Mặc định: `http://localhost:4000/api/letta/agents/tools`)*
 
 - **Payload Cấu hình chuẩn**:
 ```json

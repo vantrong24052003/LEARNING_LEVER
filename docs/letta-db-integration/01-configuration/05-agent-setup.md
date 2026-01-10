@@ -8,8 +8,8 @@ Sau khi đã đăng ký Tool thành công ở [Bước 1](./04-tool-definition.m
 
 Gửi request `POST` đến Project 1.
 
-- **Endpoint**: `POST {LETTA_SERVER_URL}/api/agents`  
-  *(Môi trường test: `http://localhost:4000/api/agents`)*
+- **Endpoint**: `POST {LETTA_SERVER_URL}/api/letta/agents`  
+  *(Môi trường test: `http://localhost:4000/api/letta/agents`)*
 - **Payload (JSON chuẩn cho khách hàng)**:
 
 ```json

@@ -1,19 +1,11 @@
+# frozen_string_literal: true
+
 class PostsController < ApplicationController
   DEFAULT_PAGE = 1
   DEFAULT_LIMIT = 50
   DEFAULT_TTL = 30
 
-  before_action :find_post, only: [ :update, :destroy ]
-
-  def create
-    @post = Post.new(permit_params)
-
-    if @post.save
-      render_success(response: @post, status: :created)
-    else
-      render_error(error: @post.errors.full_messages.join(", "), status: :unprocessable_entity)
-    end
-  end
+  before_action :find_post, only: %i[show update destroy]
 
   def index
     page  = params[:page].presence || DEFAULT_PAGE
@@ -27,9 +19,19 @@ class PostsController < ApplicationController
     render_success(response: posts, status: :ok)
   end
 
-  # def show
-  #   render_success(response: @post, status: :ok)
-  # end
+  def show
+    render_success(response: @post, status: :ok)
+  end
+
+  def create
+    @post = Post.new(permit_params)
+
+    if @post.save
+      render_success(response: @post, status: :created)
+    else
+      render_error(error: @post.errors.full_messages.join(", "), status: :unprocessable_entity)
+    end
+  end
 
   def update
     if @post.update(permit_params)
@@ -54,6 +56,6 @@ class PostsController < ApplicationController
   end
 
   def permit_params
-     params.require(:post).permit(:user_id, :title, :status)
+    params.expect(post: %i[user_id title status])
   end
 end

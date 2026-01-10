@@ -4,14 +4,14 @@ module Mutations
   module Post
     class UpdateMutation < BaseMutation
       argument :id, ID, required: true
-      argument :title, String, required: false
       argument :status, String, required: false
+      argument :title, String, required: false
 
       field :data, ObjectTypes::PostType, null: true
-      field :errors, [ String ], null: false
+      field :errors, [String], null: false
 
       def resolve(id:, **attrs)
-        post = ::Post.find_by(id: id)
+        post = ::Post.find_by(id:)
         return render_not_found("Post") unless post
 
         if post.update(attrs)

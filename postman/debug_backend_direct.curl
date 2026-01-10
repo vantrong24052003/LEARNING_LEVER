@@ -1,6 +1,0 @@
-curl -v -X POST http://localhost:4000/api/agents/agent-5123a916-c054-4723-aaa6-9cca47a78bdd/messages \
-  -H "Content-Type: application/json" \
-  -d '{
-    "message": "Test direct message",
-    "role": "user"
-  }'
