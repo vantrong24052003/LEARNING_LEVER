@@ -4,8 +4,9 @@ module External
 
     def call(tool_calls)
       tool_calls.map do |call|
-        output = execute_tool(call[:name], JSON.parse(call[:arguments].to_s))
-        { tool_call_id: call[:id], output: output.to_json }
+        args = call[:arguments].is_a?(String) ? JSON.parse(call[:arguments]) : call[:arguments]
+        output = execute_tool(call[:name], args)
+        { tool_call_id: call[:id], output: output.to_json, name: call[:name] }
       end
     end
 

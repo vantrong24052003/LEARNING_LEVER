@@ -20,9 +20,21 @@ module External
       handle_response(connection.post(path) { |req| req.body = body.to_json })
     end
 
+    def send_approval(agent_id:, approval_request_id:, approve: true)
+      path = format(MESSAGES_PATH, agent_id: agent_id)
+      body = { type: "approval", approve: approve, approval_request_id: approval_request_id, role: "user" }
+      handle_response(connection.post(path) { |req| req.body = body.to_json })
+    end
+
     def send_tool_outputs(agent_id:, tool_outputs:)
       path = format(MESSAGES_PATH, agent_id: agent_id)
-      messages = tool_outputs.map { |o| { role: ROLE_TOOL, content: o[:output], tool_call_id: o[:tool_call_id] } }
+      # Use 'system' role as 'tool' is not supported by API
+      messages = tool_outputs.map do |o| 
+        { 
+          role: "system", 
+          content: "Tool '#{o[:name]}' output: #{o[:output]}" 
+        } 
+      end
       
       handle_response(connection.post(path) { |req| req.body = { messages: messages }.to_json })
     end
@@ -40,8 +52,8 @@ module External
 
     def connection
       @connection ||= Faraday.new(url: @base_url) do |conn|
-        conn.options.open_timeout = 120
-        conn.options.timeout = 120
+        conn.options.open_timeout = 300
+        conn.options.timeout = 300
         conn.request :json
         conn.response :json
         conn.headers["Authorization"] = "Bearer #{@api_key}" if @api_key.present?

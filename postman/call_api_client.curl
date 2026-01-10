@@ -1,0 +1,8 @@
+# Replace <AGENT_ID> with the actual ID returned from create_agent.curl
+
+curl -X POST http://localhost:3000/external/letta \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "agent-3f4b37b5-a448-4408-a836-b96cbbab5115",
+    "message": "Tìm cho tôi 10 bài viết bất kỳ"
+  }'
