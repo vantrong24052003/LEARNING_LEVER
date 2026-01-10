@@ -29,8 +29,8 @@ Hệ thống vận hành theo 3 luồng chính tùy thuộc vào độ phức t�
 
 ### Luồng A: Chat cơ bản (Text-only)
 1. **User**: Hỏi một câu thông thường (ví dụ: "Chào bạn").
-2. **Project 2**: Forward tin nhắn sang Project 1 (POST `{LETTA_SERVER_URL}/api/agents/:agentId/messages`).  
-   *(Mặc định hiện tại: `http://localhost:4000`)*
+2. **Project 2**: Forward tin nhắn sang Project 1 (POST `{LETTA_SERVER_URL}/api/letta/agents/:agentId/messages`).  
+   *(Mặc định hiện tại: `http://localhost:4000/api/letta`)*
 3. **Project 1**: Trả về text trả lời ngay lập tức.
 4. **Project 2**: Hiển thị cho User.
 

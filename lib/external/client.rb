@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module External
   class Client
     class Error < StandardError; end
 
-    DEFAULT_BASE_URL = "http://localhost:4000/api/"
+    DEFAULT_BASE_URL = "http://localhost:4000/api/letta/"
     TOOLS_PATH = "agents/tools"
-    MESSAGES_PATH = "agents/%{agent_id}/messages"
+    MESSAGES_PATH = "agents/%<agent_id>s/messages"
     ROLE_USER = "user"
     ROLE_TOOL = "tool"
 
@@ -14,32 +16,32 @@ module External
     end
 
     def send_message(agent_id:, content:, role: ROLE_USER)
-      path = format(MESSAGES_PATH, agent_id: agent_id)
-      body = { message: content, role: role }
+      path = format(MESSAGES_PATH, agent_id:)
+      body = { message: content, role: }
 
       handle_response(connection.post(path) { |req| req.body = body.to_json })
     end
 
     def send_approval(agent_id:, approval_request_id:, approve: true)
-      path = format(MESSAGES_PATH, agent_id: agent_id)
-      body = { type: "approval", approve: approve, approval_request_id: approval_request_id, role: "user" }
+      path = format(MESSAGES_PATH, agent_id:)
+      body = { type: "approval", approve:, approval_request_id:, role: "user" }
       handle_response(connection.post(path) { |req| req.body = body.to_json })
     end
 
     def send_tool_outputs(agent_id:, tool_outputs:)
-      path = format(MESSAGES_PATH, agent_id: agent_id)
+      path = format(MESSAGES_PATH, agent_id:)
       messages = tool_outputs.map do |o|
         {
-          role: "system",
-          content: "Tool '#{o[:name]}' output: #{o[:output]}"
+          role:    "system",
+          content: "Tool '#{o[:name]}' output: #{o[:output]}",
         }
       end
 
-      handle_response(connection.post(path) { |req| req.body = { messages: messages }.to_json })
+      handle_response(connection.post(path) { |req| req.body = { messages: }.to_json })
     end
 
     def list_messages(agent_id:)
-      path = format(MESSAGES_PATH, agent_id: agent_id)
+      path = format(MESSAGES_PATH, agent_id:)
       handle_response(connection.get(path))
     end
 

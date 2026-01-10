@@ -2,8 +2,8 @@
 
 module Queries
   class BaseQuery < GraphQL::Schema::Resolver
-    def resolve(*args)
-      super(*args)
+    def resolve(*)
+      super
     rescue ArgumentError => e
       handle_argument_error(e)
     rescue ActiveRecord::RecordNotFound => e

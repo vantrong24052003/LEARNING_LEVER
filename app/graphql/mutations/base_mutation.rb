@@ -6,8 +6,8 @@ module Mutations
     input_object_class Base::BaseInputObject
     object_class Base::BaseObject
 
-    def resolve(*args)
-      super(*args)
+    def resolve(*)
+      super
     rescue ArgumentError => e
       handle_argument_error(e)
     rescue ActiveRecord::RecordNotFound => e

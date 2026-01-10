@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module External
   class LocalQuery
     def search(query:, category: nil, limit: nil)

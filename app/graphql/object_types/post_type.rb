@@ -5,8 +5,8 @@ module ObjectTypes
     graphql_name "Post"
 
     field :id, ID, null: false
-    field :title, String, null: false
     field :status, String, null: false
+    field :title, String, null: false
 
     field :user, ObjectTypes::UserType, null: false
   end

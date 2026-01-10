@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
-  def new
-  end
+  def new; end
 
   def create
     email = params[:email]
@@ -11,7 +12,7 @@ class SessionsController < ApplicationController
         flash[:success] = "Login successful! (Demo)"
         redirect_to dashboards_path
       else
-        flash[:error] = "Password must be at least 6 characters"
+        flash.now[:error] = "Password must be at least 6 characters"
         render :new
       end
     else

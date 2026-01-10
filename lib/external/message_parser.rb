@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module External
   class MessageParser
-   ApprovalRequestMessage = "approval_request_message"
+    ApprovalRequestMessage = "approval_request_message"
 
     def self.extract_messages(response)
       response["data"]["data"]["response"]["messages"]
@@ -14,12 +16,12 @@ module External
       messages = extract_messages(response)
       tool_msg = messages.find { |m| m["message_type"] == "tool_call_message" }
       return [] unless tool_msg
-      
+
       tool_msg["tool_calls"].map do |tc|
         {
-          id: tc["id"],
-          name: tc["function"]["name"],
-          arguments: JSON.parse(tc["function"]["arguments"])
+          id:        tc["id"],
+          name:      tc["function"]["name"],
+          arguments: JSON.parse(tc["function"]["arguments"]),
         }
       end
     end
@@ -32,18 +34,18 @@ module External
     def self.extract_approval_tool_call(msg)
       tc = msg["tool_call"]
       [{
-        id: tc["tool_call_id"],
-        name: tc["name"],
-        arguments: JSON.parse(tc["arguments"])
+        id:        tc["tool_call_id"],
+        name:      tc["name"],
+        arguments: JSON.parse(tc["arguments"]),
       }]
     end
 
     def self.extract_execution_tool_calls(params)
       params["tool_calls"].map do |tc|
         {
-          id: tc["id"],
-          name: tc["function"]["name"],
-          arguments: JSON.parse(tc["function"]["arguments"])
+          id:        tc["id"],
+          name:      tc["function"]["name"],
+          arguments: JSON.parse(tc["function"]["arguments"]),
         }
       end
     end

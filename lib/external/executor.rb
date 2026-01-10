@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module External
   class Executor
     TOOL_QUERY_LOCAL = "query_local_db"
@@ -12,11 +14,13 @@ module External
     private
 
     def execute_tool(name, args)
-      return External::LocalQuery.new.search(
-        query: args["query"], 
-        category: args["category"], 
-        limit: args["limit"]
-      ) if name == TOOL_QUERY_LOCAL
+      if name == TOOL_QUERY_LOCAL
+        return External::LocalQuery.new.search(
+          query:    args["query"],
+          category: args["category"],
+          limit:    args["limit"],
+        )
+      end
       { error: "Tool not found: #{name}" }
     rescue StandardError => e
       { error: e.message }
