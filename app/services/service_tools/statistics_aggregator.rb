@@ -1,25 +1,22 @@
 # frozen_string_literal: true
 
 module ServiceTools
-  class StatisticsAggregator
+  class StatisticsAggregator < BaseTool
     ALLOWED_OPERATIONS = %w[avg sum min max count].freeze
+    ALLOWED_TABLES = %w[posts users].freeze
+    ALLOWED_COLUMNS = %w[id author_id balance price amount].freeze
 
     def execute(table_name:, column:, operation: "count")
+      operation = operation.to_s.downcase
       return { error: "Invalid operation. Allowed: #{ALLOWED_OPERATIONS.join(', ')}" } if !ALLOWED_OPERATIONS.include?(operation)
-      
-      model_class = table_name.classify.safe_constantize
-      return { error: "Unknown table: #{table_name}" } if !model_class
-      
-      return { error: "Column '#{column}' does not exist on table '#{table_name}'" } if !model_class.column_names.include?(column.to_s)
 
+      validate_table!(table_name, ALLOWED_TABLES)
+      validate_column!(column, ALLOWED_COLUMNS)
+
+      model_class = get_model!(table_name)
       result = model_class.public_send(operation, column)
-      
-      {
-        description: "#{operation.capitalize} of #{column} for #{table_name}",
-        value: result
-      }
-    rescue StandardError => e
-      { error: e.message }
+
+      { description: "#{operation.capitalize} of #{column} in #{table_name}", value: result }
     end
   end
 end

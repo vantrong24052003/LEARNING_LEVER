@@ -1,33 +1,32 @@
 # frozen_string_literal: true
 
 namespace :letta do
-  desc "Register tools with Letta Server"
-  task register_tool: :environment do
-    client = External::Client.new
+  desc "Register all tools in lib/tasks/letta/tools"
+  task sync_tools: :environment do
+    client = External::Letta::Client.new
+    tools_dir = Rails.root.join("lib", "tasks", "letta", "tools")
 
-    tool_def = {
-      sourceCode:              <<~PYTHON,
-        def query_local_db(query: str = None, category: str = None):
-            """
-            Tìm kiếm sản phẩm hoặc thông tin trong database của khách hàng.
+    Dir[File.join(tools_dir, "*.rb")].each do |file|
+      require file
 
-            Args:
-                query (str): Từ khóa tìm kiếm tiêu đề bài viết (tùy chọn).
-                category (str): Lọc theo trạng thái bài viết: draft, published, archived (tùy chọn).
-            """
-            return "CLIENT_SIDE_EXECUTION"
-      PYTHON
-      defaultRequiresApproval: true,
-    }
+      method_name = "#{File.basename(file, '.rb')}_definition"
 
-    schema = tool_def # Full content for POST /agents/tools as per Phase 1 doc
+      if Object.respond_to?(method_name, true)
+        tool_def = Object.send(method_name)
+        Rails.logger.info "Registering tool: #{tool_def[:name]}..."
 
-    puts "Registering tool: #{tool_def[:name]}..."
-    begin
-      response = client.register_tool(schema)
-      puts "Success: #{response}"
-    rescue StandardError => e
-      puts "Error: #{e.message}"
+        begin
+          response = client.register_tool(tool_def)
+          Rails.logger.info "Success: #{tool_def[:name]}"
+          Rails.logger.info "Response: #{response}"
+        rescue StandardError => e
+          Rails.logger.error "Error registering #{tool_def[:name]}: #{e.message}"
+        end
+      else
+        Rails.logger.warn "Warning: Definition method #{method_name} not found in #{file}"
+      end
     end
+
+    Rails.logger.info "Tool synchronization complete."
   end
 end

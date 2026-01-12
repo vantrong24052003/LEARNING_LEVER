@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
 module ServiceTools
-  class Calculator
+  class Calculator < BaseTool
     def execute(expression:)
-      return { error: "Invalid characters in expression. Only numbers and basic math operators allowed." } if !expression.match?(/\A[\d\s+\-*\/().]+\z/)
-      
-      result = eval(expression)
-      
-      {
-        expression: expression,
-        result: result
-      }
-    rescue StandardError => e
-      { error: "Calculation failed: #{e.message}" }
+      raise ToolError, "Security violation: Invalid characters in expression." if !expression.match?(/\A[\d\s+\-*\/().]+\z/)
+
+      clean_expression = expression.gsub(/\s+/, "")
+      raise ToolError, "Invalid expression format." if clean_expression.match?(/[\+\-\*\/]{2,}/) && !clean_expression.match?(/\*\*|[\+\-\*\/]\(/)
+
+      { expression: expression, result: eval(clean_expression) }
+    rescue ZeroDivisionError
+      raise ToolError, "Math error: Division by zero"
     end
   end
 end
